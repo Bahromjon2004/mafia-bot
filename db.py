@@ -1,0 +1,1 @@
+# Bu yerda kelajakda SQLite bazasi ishlatiladi
