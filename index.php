@@ -243,66 +243,70 @@ $theQuery = $update->inline_query->query;
 $cid = $update->inline_query->query;
 $description = $update->inline_query->chat->description;
 $first_name = $update->inline_query->first_name;
-if(mb_stripos($cid,"@")!==false){
-$user = bot("getchat",[
-	'chat_id'=>$cid,
-	]);
-$type = $user->result->type;
-$id = $user->result->id;
-$us = bot('getChatMembersCount',[
-	'chat_id'=>$cid
-	]);
-	$count = $us->result;
-if($type=="channel"){
-bot('answerInlineQuery', [
-'inline_query_id'=>$update->inline_query->id,
-'cache_time'=>1,
-'results'=>json_encode([[
-'type'=>'article',
-'id'=>base64_encode(1),
-'title'=>"$cid\nhaqida ma'lumot",
-'input_message_content'=>[
-'disable_web_page_preview'=>true,
-'parse_mode' => 'markdown',
-'message_text'=>"*📡Kanal useri:*  [$cid]\n*👥A'zolari*: `$count`\n*🆔Kanal id:* `$id`
-$description
-$first_name",
+if (mb_stripos($cid,"@") !== false) {
+    $user = bot("getchat",[
+        'chat_id' => $cid,
+    ]);
+    $type = $user->result->type;
+    $id = $user->result->id;
+    $us = bot('getChatMembersCount',[
+        'chat_id' => $cid
+    ]);
+    $count = $us->result;
+    if ($type == "channel") {
+        bot('answerInlineQuery', [
+            'inline_query_id' => $update->inline_query->id,
+            'cache_time' => 1,
+            'results' => json_encode([[
+                'type' => 'article',
+                'id' => base64_encode(1),
+                'title' => "$cid haqida ma'lumot",
+                'input_message_content' => [
+    'disable_web_page_preview' => true,
+    'parse_mode' => 'markdown',
+    'message_text' => "*📡 Kanal useri:* [$cid]\n*👥 A'zolari:* `$count`\n*🆔 Kanal id:* $id\n$description\n$first_name",
 ],
-'reply_markup' =>
-[ 'inline_keyboard'=>[
-                   [["switch_inline_query"=>"@", 'text' => "🆔Aniqlash"],],
-                [['text'=>'🤖 Botga Kirish','url'=>'https://t.me/Mafiyaku_bot'],],
-                
+'reply_markup' => [
+    'inline_keyboard' => [
+        [
+            ["switch_inline_query" => "@", 'text' => "🆔 Aniqlash"]
+        ],
+        [
+            ['text' => '🤖 Botga Kirish', 'url' => 'https://t.me/Mafiyaku_bot']
+        ]
+    ]
 ]
-])
-]);
+            ]]) // <-- json_encode yopilishi
+        ]);   // <-- bot('answerInlineQuery', ...) yopilishi
+    }
 }
 //end
 if($type=="supergroup"){
 bot('answerInlineQuery', [
 'inline_query_id'=>$update->inline_query->id,
 'cache_time'=>1,
-'results'=>json_encode([[
+'results'=>json_encode([
 'type'=>'article',
 'id'=>base64_encode(1),
 'title'=>"$cid\ngruppasi haqida ma'lumot",
 'input_message_content'=>[
-'disable_web_page_preview'=>true,
-'parse_mode' => 'markdown',
-'message_text'=>"*📡Gruppa useri:*  [$cid]\n*👥 Gruppa a'zolari*: `$count`\n*🆔Gruppa id:* `$id`",
+    'disable_web_page_preview'=>true,
+    'parse_mode' => 'markdown',
+    'message_text'=>"*📡 Gruppa useri:* [$cid]\n*👥 Gruppa a'zolari*: `$count`\n*🆔 Gruppa id:* $id",
 ],
-'reply_markup' =>
-[ 'inline_keyboard'=>[
-                   [["switch_inline_query"=>"@", 'text' => "🆔Aniqlash"],],
-               [['text'=>'✅Botga Kirish','url'=>'https://t.me/Mafiyaku_bot'],], 
-                 ] ],
-
-]
-])
+'reply_markup' => [
+    'inline_keyboard' => [
+        [
+            ['switch_inline_query' => "@", 'text' => "🆔 Aniqlash"]
+        ],
+        [
+            ['text' => '✅ Botga Kirish', 'url' => 'https://t.me/Mafiyaku_bot']
+        ]
+    ]
+]   // ✅ bu yerga ; qo‘shish kerak emas, lekin pastdagilarni yopish kerak
+    ])
 ]);
 }
-}
-
 if($data=="english"){
    bot('editMessageText',[
 'chat_id'=>$chat_id2,
